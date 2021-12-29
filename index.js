@@ -3364,11 +3364,10 @@ break
 		
 		               case 'sticker': case 'stikerin':
 					case 'stiker': case 's':
-					if (isLimit(sender, isPremium, isCreator, isOwner, limitawal, limit)) return sendButMessage(from, lang.limit(prefix), `© ${ownername}`, [{buttonId: 'limit', buttonText: {displayText: `Check Limit`, },type: 1,}]);
-						if (isMedia && !mek.message.videoMessage || isQuotedImage) {
+					if (isMedia && !mek.message.videoMessage || isQuotedImage) {
 							const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
 							const media = await alpha.downloadAndSaveMediaMessage(encmedia)
-							//ran = getRandom('.webp')
+							ran = getRandom('.webp')
                         await ffmpeg(`./${media}`)
                             .input(media)
                             .on('start', function (cmd) {
@@ -3380,20 +3379,17 @@ break
                                  })
                             .on('end', async function () {
                                 console.log('Finish')
-                                exec(`webpmux -set exif ./sticker/data.exif ./sticker/${sender}.webp -o ./sticker/${sender}.webp`, async (error) => {
-								if (error) return reply(lang.tryAgain())
-								await alpha.sendMessage(from, fs.readFileSync(`./sticker/${sender}.webp`), sticker, {quoted: fgif})
-								fs.unlinkSync(media)
-								fs.unlinkSync(`./sticker/${sender}.webp`)
-								})
-								})
-                           .addOutputOptions([`-vcodec`, `libwebp`, `-vf`, `scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
+                                await alpha.sendMessage(from, fs.readFileSync(ran), sticker, { quoted: fgclink })
+                                    fs.unlinkSync(media)
+                                    fs.unlinkSync(ran)
+                                })
+                            .addOutputOptions([`-vcodec`, `libwebp`, `-vf`, `scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
                             .toFormat('webp')
-                            .save(`./sticker/${sender}.webp`)
+                            .save(ran)
                     } else if ((isMedia && mek.message.videoMessage.seconds < 11 || isQuotedVideo && mek.message.extendedTextMessage.contextInfo.quotedMessage.videoMessage.seconds < 11) && args.length == 0) {
                         const encmedia = isQuotedVideo ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
                         const media = await alpha.downloadAndSaveMediaMessage(encmedia)
-                    //    ran = getRandom('.webp')
+                        ran = getRandom('.webp')
                         await ffmpeg(`./${media}`)
                             .inputFormat(media.split('.')[1])
                             .on('start', function (cmd) {
@@ -3407,16 +3403,13 @@ break
                             })
                             .on('end', async function () {
                                 console.log('Finish')
-                                exec(`webpmux -set exif ./sticker/data.exif ./sticker/${sender}.webp -o ./sticker/${sender}.webp`, async (error) => {
-								if (error) return reply(lang.tryAgain())
-								await alpha.sendMessage(from, fs.readFileSync(`./sticker/${sender}.webp`), sticker, {quoted: fgif})
-								fs.unlinkSync(media)
-								fs.unlinkSync(`./sticker/${sender}.webp`)
-								})
-								})
-								.addOutputOptions([`-vcodec`, `libwebp`, `-vf`, `scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
+                                await alpha.sendMessage(from, fs.readFileSync(ran), sticker, { quoted: fgclink })
+                                    fs.unlinkSync(media)
+                                    fs.unlinkSync(ran)
+                                })
+                            .addOutputOptions([`-vcodec`, `libwebp`, `-vf`, `scale='min(320,iw)':min'(320,ih)':force_original_aspect_ratio=decrease,fps=15, pad=320:320:-1:-1:color=white@0.0, split [a][b]; [a] palettegen=reserve_transparent=on:transparency_color=ffffff [p]; [b][p] paletteuse`])
                             .toFormat('webp')
-                            .save(`./sticker/${sender}.webp`)
+                            .save(ran)
                     } else if ((isMedia || isQuotedImage) && args[0] == 'nobg') {
                         const encmedia = isQuotedImage ? JSON.parse(JSON.stringify(mek).replace('quotedM', 'm')).message.extendedTextMessage.contextInfo : mek
                         const media = await alpha.downloadAndSaveMediaMessage(encmedia)
@@ -3432,7 +3425,7 @@ break
                             })
                             exec(`ffmpeg -i ${ranp} -vcodec libwebp -filter:v fps=fps=20 -lossless 1 -loop 0 -preset default -an -vsync 0 -s 512:512 ${ranw}`, (err) => {
                                 fs.unlinkSync(ranp)
-                                if (err) return reply(lang.tryAgain())
+                                if (err) return reply('emror bang')
                                 alpha.sendMessage(from, fs.readFileSync(ranw), sticker, { quoted: mek })
                                     fs.unlinkSync(ranw)
                                 })
@@ -3440,8 +3433,7 @@ break
                     } else {
                         reply(`Kirim gambar dengan caption ${prefix}sticker atau tag gambar yang sudah dikirim\nDurasi sticker video 1-9 detik...`)
                     }
-                    await limitAdd(sender, limit)
-					break   
+                    break
 		    case 'toimg':
 		if (isLimit(sender, isPremium, isCreator, isOwner, limitawal, limit)) return sendButMessage(from, lang.limit(prefix), `© ${ownername}`, [{buttonId: 'limit', buttonText: {displayText: `Check Limit`, },type: 1,}]);
 		if (!isQuotedSticker) return reply('Reply stc nya!')
